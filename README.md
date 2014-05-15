@@ -8,17 +8,16 @@ Make a new directory for your project, and create a package.json file:
 npm init
 ```
 
-Install hapi, joi, and hapi-crud:
+Install hapi, and hapi-crud:
 
 ```
-npm install --save hapi joi hapi-crud
+npm install --save hapi hapi-crud
 ```
 
 Create a resource and expose it to the world via apis (server.js):
 
 ```
 var Hapi = require('hapi');
-var Joi  = require('joi');
 
 var userModule = {
 	find : function(options, callback) {
