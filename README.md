@@ -2,6 +2,20 @@ Plugin for hapi servers. Takes an index of resource modules, installs crud-route
 
 Example Usage:
 
+1. Make a new directory for your project, and create a package.json file:
+
+```
+npm init
+```
+
+2. Install hapi, joi, and hapi-crud:
+
+```
+npm install --save hapi joi hapi-crud
+```
+
+3. Create a resource and expose it to the world via apis (server.js):
+
 ```
 var Hapi = require('hapi');
 var Joi  = require('joi');
@@ -27,11 +41,10 @@ server.start();
 
 console.log("Serving crud on port 8000");
 ```
-
-After running this server, you should be able to go to
+4. Run this server, and go to
 
 ```
 http://localhost:8000/data/users
 ```
 
-and receive a list of users.
+to receive a list of users.
