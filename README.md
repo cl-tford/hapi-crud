@@ -1,0 +1,1 @@
+Plugin for hapi servers. Takes an index of resource modules, installs crud-routes for each.

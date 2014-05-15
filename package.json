@@ -1,0 +1,10 @@
+{
+  "name": "hapi-crud",
+  "version": "0.0.1",
+  "author": "Terry Ford",
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "joi": "^3.1.0"
+  },
+  "repository" : "git:github.com/tbonelaforge/hapi-crud"
+}
