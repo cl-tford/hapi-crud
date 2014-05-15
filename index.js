@@ -10,28 +10,29 @@ var validOptions = {
   authorizationStrategies : {
     "sensitive" : Joi.string(),
     "safe"      : Joi.string()
-  }
+  },
+  basePath : Joi.string()
 };
 
 var HapiCrud = function(options) {
   this._assertValidOptions(options);
-//  if (!options.resources) {
-//    throw new Error("HapiCrud needs resources");
-//  }
   this._resources = options.resources;
-//  this._sensitiveAuthorizationStrategy = options.sensitiveAuthorizationStrategy || null;
   this._authorizationStrategies = options.authorizationStrategies;
-//  this._sensitiveAuthorizationStrategy = this._getS
-//  this._safeAuthorizationStrategy = options.safeAuthorizationStrategy || null;
+  this._basePath = options.basePath || '';
 };
 
 _.extend(HapiCrud.prototype, {
   defineRoutes : function() {
     var self = this;
     var routes = [];
+    var blessedResourceModule = null;
 
     _.each(self._resources, function(resourceModule, resourceName) {
-      self.checkInterface(resourceModule);
+      blessedResourceModule = Object.create(resourceModule);
+      console.log("The blessedResourceModule is:\n", blessedResourceModule);
+      console.log("The find method is:\n", blessedResourceModule.find);
+      //self.checkInterface(resourceModule);
+      self.checkInterface(blessedResourceModule);
       _.each(
         [
           'defineApiGetOneRoute',
@@ -41,7 +42,7 @@ _.extend(HapiCrud.prototype, {
           'defineApiSearchRoute'
         ],
         function(routeDefiner) {
-          var routeDefinition = self[routeDefiner](resourceName, resourceModule);
+          var routeDefinition = self[routeDefiner](resourceName, blessedResourceModule);
 
           if (routeDefinition) {
             routes.push(routeDefinition);
@@ -54,13 +55,12 @@ _.extend(HapiCrud.prototype, {
 
   checkInterface : function(resourceModule) {
     crud.checkInterface(resourceModule);
-    crud.request.checkQueryValidation(resourceModule);
-    crud.request.checkPayloadValidation(resourceModule);
+    crud.request.checkInterface(resourceModule);
   },
 
   defineApiGetOneRoute : function(resourceName, resourceModule) {
     return  {
-      method : 'GET', path : '/api/data/' + resourceName + '/{id}',
+      method : 'GET', path : this._basePath + '/data/' + resourceName + '/{id}',
       config : {
         handler : crud.get(resourceModule),
         auth : this._getAuthorizationOptions(resourceModule),
@@ -73,7 +73,7 @@ _.extend(HapiCrud.prototype, {
   
   defineApiGetRoute : function(resourceName, resourceModule) {
     return {
-      method : 'GET', path : '/api/data/' + resourceName,
+      method : 'GET', path : this._basePath + '/data/' + resourceName,
       config : {
         handler : crud.get(resourceModule),
         auth : this._getAuthorizationOptions(resourceModule),
@@ -86,7 +86,7 @@ _.extend(HapiCrud.prototype, {
   
   defineApiDeleteRoute : function(resourceName, resourceModule) {
     return  {
-      method : 'DELETE', path : '/api/data/' + resourceName + '/{id?}',
+      method : 'DELETE', path : this._basePath + '/data/' + resourceName + '/{id?}',
       config : {
         handler : crud.del(resourceModule),
         auth : this._getSensitiveAuthOptions()
@@ -96,7 +96,7 @@ _.extend(HapiCrud.prototype, {
   
   defineApiPostRoute : function(resourceName, resourceModule) {
     return {
-      method : 'POST', path : '/api/data/' + resourceName,
+      method : 'POST', path : this._basePath + '/data/' + resourceName,
       config : {
         handler : crud.post(resourceModule),
         auth : this._getSensitiveAuthOptions(),
@@ -114,7 +114,7 @@ _.extend(HapiCrud.prototype, {
       return null;
     }
     return {
-      method : 'Get', path : '/api/search/' + resourceName,
+      method : 'Get', path : this._basePath + '/search/' + resourceName,
       config : {
         handler : crud.search(resourceModule),
         auth : this._getAuthorizationOptions(resourceModule)
