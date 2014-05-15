@@ -3,7 +3,6 @@ Plugin for hapi servers. Takes an index of resource modules, installs crud-route
 Example Usage:
 
 ```
-var Hapi = require('hapi');
 var Joi  = require('joi');
 
 var userModule = {
@@ -12,9 +11,7 @@ var userModule = {
 	},
 	findById : function() {},
 	save : function() {},
-	remove : function() {},
-	validateFields : function() { return Joi.any(); },
-	validateSort : function() { return Joi.any(); }
+	remove : function() {}
 };
 
 var server = Hapi.createServer('localhost', 8000);
@@ -27,6 +24,7 @@ server.pack.require('hapi-crud', {
 
 server.start();
 
+console.log("Serving crud on port 8000");
 ```
 
 After running this server, you should be able to go to

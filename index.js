@@ -25,13 +25,9 @@ _.extend(HapiCrud.prototype, {
   defineRoutes : function() {
     var self = this;
     var routes = [];
-    var blessedResourceModule = null;
 
     _.each(self._resources, function(resourceModule, resourceName) {
-      blessedResourceModule = Object.create(resourceModule);
-      console.log("The blessedResourceModule is:\n", blessedResourceModule);
-      console.log("The find method is:\n", blessedResourceModule.find);
-      //self.checkInterface(resourceModule);
+      var blessedResourceModule = Object.create(resourceModule);
       self.checkInterface(blessedResourceModule);
       _.each(
         [
