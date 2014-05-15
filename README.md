@@ -3,6 +3,7 @@ Plugin for hapi servers. Takes an index of resource modules, installs crud-route
 Example Usage:
 
 ```
+var Hapi = require('hapi');
 var Joi  = require('joi');
 
 var userModule = {
