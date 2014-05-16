@@ -110,9 +110,9 @@ _.extend(HapiCrud.prototype, {
   },
     
   defineApiSearchRoute : function(resourceName, resourceModule) {
-    if (!resourceModule.hasTextSearch ||
-        typeof resourceModule.hasTextSearch !== 'function') {
-      
+    if (!resourceModule.textSearch ||
+        typeof resourceModule.textSearch !== 'function') {
+
       return null;
     }
     return {
